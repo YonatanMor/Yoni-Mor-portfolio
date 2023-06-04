@@ -1,0 +1,120 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+body {
+  display: flex;
+  justify-content: center;
+  /* padding: 1.2rem; */
+}
+.main {
+  border: aqua dashed 2px;
+  padding: 25px;
+  height: 95vh;
+  flex-basis: 100%;
+  max-width: 50rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem;
+}
+.title {
+  font-family: "Amatic SC", cursive;
+  font-size: 4rem;
+  font-weight: 700;
+  color: #22a1ff;
+  text-align: center;
+}
+.cards-box {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 20px;
+}
+.card {
+  border: #4b4b4b 2px solid;
+  flex-grow: 1;
+  margin: 20px;
+}
+.marked-card {
+  border: red 5px solid;
+}
+.unmarked-card {
+  border: #4b4b4b 1px solid;
+}
+.picker-box {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+}
+.picker {
+  /*for each color the user can choose from*/
+  border: #4b4b4b 1px solid;
+  margin: 5px;
+  flex-grow: 1;
+  flex-basis: 165px;
+  cursor: pointer;
+}
+
+.modal {
+  visibility: hidden;
+  position: absolute;
+  z-index: 5;
+  top: 27vh;
+  width: 400px;
+  height: 170px;
+  background-image: url(/pics/loose\ madal\ pic\ croped.jpg);
+  opacity: 0.8;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.5em;
+  font-family: sans-serif;
+  color: #f9e0bb;
+}
+
+.win {
+  background-image: url(/pics/win.jpg);
+  background-size: cover;
+  color: #000000;
+  text-align: start;
+}
+
+.background_image {
+  width: 100%;
+  height: 10%;
+}
+
+.dim_screen {
+  visibility: hidden;
+  z-index: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #10101067;
+}
+
+.transparent {
+  background-color: #00000027;
+}
+
+#btn {
+  padding: 0.2rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  margin: 16px 24px;
+  cursor: pointer;
+}
+
+.yes {
+  border: 1px solid black;
+  background-color: rgb(92, 182, 92);
+}
+.no {
+  border: 1px solid black;
+  background-color: #cc3636;
+}
