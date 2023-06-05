@@ -34,6 +34,7 @@ body {
   padding-bottom: 20px;
 }
 .card {
+  border-radius: 5px;
   border: #4b4b4b 2px solid;
   flex-grow: 1;
   margin: 20px;
@@ -53,6 +54,7 @@ body {
 .picker {
   /*for each color the user can choose from*/
   border: #4b4b4b 1px solid;
+  border-radius: 3px;
   margin: 5px;
   flex-grow: 1;
   flex-basis: 165px;

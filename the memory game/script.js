@@ -15,88 +15,90 @@ const colors = [
 
 const numOfCards = 3;
 let newGameIndicator = 0;
-let cardsColor = [];
+let uniqueColor = [];
 let currentCard = 0;
+let $ = (selector) => document.querySelector(`${selector}`);
+let $$ = (selector) => document.querySelectorAll(`${selector}`);
 
 init();
 
 function init() {
   if (!newGameIndicator) {
-    renderColorPicker(colors);
+    renderColorPicker();
   } else {
-    const modal = document.querySelector(".modal");
-    modal.style.visibility = "hidden";
-    document.querySelector(".dim_screen").style.visibility = "hidden";
-    cardsColor = new Array();
-    currentCard = 0;
-    renderCards(colors, numOfCards);
-    if (document.querySelector(".win")) {
-      document.querySelector(".win").classList.remove("win");
-      document.querySelector(".modal_top_text").textContent = "You Lost";
-      document.querySelector(".modal_lower_text").textContent =
-        "Wonna give it another shot ?";
+    if ($(".win")) {
+      $(".win").classList.remove("win");
+      $(".modal_top_text").textContent = "You Lost";
+      $(".modal_lower_text").textContent = "Wonna give it another shot ?";
     }
+    const modal = $(".modal");
+    modal.style.visibility = "hidden";
+    $(".dim_screen").style.visibility = "hidden";
+    uniqueColor = []
+    currentCard = 0;
   }
+  renderCards();
+  timer();
+  colorPicker();
+  changeCurrentCardStyle();
 }
 
-function renderColorPicker(colorPalete) {
-  colorPalete.forEach((color) => {
+function renderColorPicker() {
+  colors.forEach((color) => {
     const colorPaleteElement = document.createElement("div");
     colorPaleteElement.classList.add("picker");
     colorPaleteElement.style.backgroundColor = color;
-    document.querySelector(".picker-box").appendChild(colorPaleteElement);
+    $(".picker-box").appendChild(colorPaleteElement);
   });
-  renderCards(colors, numOfCards);
 }
 
-function renderCards(palete, size) {
-  for (let i = 0; i < size; i++) {
+function renderCards() {
+  for (let i = 0; i < numOfCards; i++) {
     if (!newGameIndicator) {
       const cardElement = document.createElement("div");
       cardElement.classList.add("unmarked-card", "card");
       paintCard(cardElement, i);
-      document.querySelector(".cards-box").appendChild(cardElement);
+      $(".cards-box").appendChild(cardElement);
     } else {
-      const cardElements = Array.from(document.querySelectorAll(".card"));
-      paintCard(cardElements[i], i);
+      const cardElement = Array.from($$(".card"))[i];
+      paintCard(cardElement, i);
     }
   }
+}
 
-  function paintCard(card, i) {
-    cardsColor.push(palete[Math.round(Math.random() * (palete.length - 1))]);
-    card.style.backgroundColor = cardsColor[i];
-  }
-
-  timer();
-  colorPicker();
+function paintCard(card, i) {
+  let color = colors[Math.floor(Math.random() * colors.length)];
+  if (!uniqueColor.includes(color)) {
+    uniqueColor.push(color);
+    card.style.backgroundColor = uniqueColor[i];
+  } else paintCard(card, i);
 }
 
 function timer() {
-  document.querySelector(".dim_screen").classList.add("transparent");
-  document.querySelector(".dim_screen").style.visibility = "visible";
+  $(".dim_screen").classList.add("transparent");
+  $(".dim_screen").style.visibility = "visible";
   setTimeout(hideCards, 3000);
   setTimeout(ableUserInput, 3000);
 }
 
 function ableUserInput() {
-  document.querySelector(".dim_screen").style.visibility = "hidden";
+  $(".dim_screen").style.visibility = "hidden";
 }
 
 function hideCards() {
-  Array.from(document.querySelectorAll(".card")).forEach(
+  Array.from($$(".card")).forEach(
     (card) => (card.style.backgroundColor = "white")
   );
 }
 
 function colorPicker() {
-  Array.from(document.querySelectorAll(".picker")).forEach((pickerEl) => {
+  Array.from($$(".picker")).forEach((pickerEl) => {
     pickerEl.addEventListener("click", compareColor);
   });
-  changeCurrentCardStyle();
 }
 
 function changeCurrentCardStyle() {
-  const cards = document.querySelectorAll(".card");
+  const cards = $$(".card");
   if (newGameIndicator) {
     Array.from(cards).forEach((card) => {
       card.classList.add("unmarked-card");
@@ -105,7 +107,7 @@ function changeCurrentCardStyle() {
   }
   if (currentCard) {
     cards[currentCard - 1].classList.remove("marked-card");
-    cards[currentCard - 1].style.backgroundColor = cardsColor[currentCard - 1];
+    cards[currentCard - 1].style.backgroundColor = uniqueColor[currentCard - 1];
   }
   if (currentCard < numOfCards) {
     cards[currentCard].classList.remove("unmarked-card");
@@ -124,7 +126,7 @@ function compareColor(e) {
   console.log(r, g, b);
 
   //compare picked color to flash card
-  if (cardsColor[currentCard] === rgbToHex(r, g, b)) {
+  if (uniqueColor[currentCard] === rgbToHex(r, g, b)) {
     // console.log(`colors matched time: ${currentCard + 1}`);
     currentCard++;
     // check if finished comparing
@@ -144,11 +146,11 @@ function rgbToHex(r, g, b) {
 
 function gameOver(isWin) {
   newGameIndicator = 1;
-  const modal = document.querySelector(".modal");
+  const modal = $(".modal");
   modal.style.visibility = "visible";
-  document.querySelector(".dim_screen").style.visibility = "visible";
+  $(".dim_screen").style.visibility = "visible";
 
-  const [yesBtn, noBtn] = document.querySelectorAll("button");
+  const [yesBtn, noBtn] = $$("button");
   yesBtn.addEventListener("click", init);
   noBtn.addEventListener("click", navigate);
 
@@ -158,7 +160,7 @@ function gameOver(isWin) {
 
   if (isWin) {
     modal.classList.add("win");
-    document.querySelector(".modal_top_text").textContent = "You Won";
-    document.querySelector(".modal_lower_text").textContent = "Go again?";
+    $(".modal_top_text").textContent = "You Won";
+    $(".modal_lower_text").textContent = "Go again?";
   }
 }
